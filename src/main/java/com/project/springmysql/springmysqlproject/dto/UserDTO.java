@@ -3,13 +3,15 @@ package com.project.springmysql.springmysqlproject.dto;
 import java.io.Serializable;
 import java.util.Objects;
 
+import org.springframework.hateoas.RepresentationModel;
+
  
 
 
-public class UserDTO implements Serializable {
+public class UserDTO extends RepresentationModel<UserDTO> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private Long id;
+	private Long key;
 	private String name;
 	private String email;
 	private String phoneNumber;
@@ -18,20 +20,22 @@ public class UserDTO implements Serializable {
 		
 	}
 
-	public UserDTO(Long id, String name, String email, String phoneNumber) {
+	public UserDTO(Long key, String name, String email, String phoneNumber) {
 		super();
-		this.id = id;
+		this.key = key;
 		this.name = name;
 		this.email = email;
 		this.phoneNumber = phoneNumber;
 	}
 
-	public Long getId() {
-		return id;
+
+
+	public Long getKey() {
+		return key;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setKey(Long key) {
+		this.key = key;
 	}
 
 	public String getName() {
@@ -60,7 +64,7 @@ public class UserDTO implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id);
+		return Objects.hash(key);
 	}
 
 	@Override
@@ -72,7 +76,7 @@ public class UserDTO implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		UserDTO other = (UserDTO) obj;
-		return Objects.equals(id, other.id);
+		return Objects.equals(key, other.key);
 	}
 	
 	

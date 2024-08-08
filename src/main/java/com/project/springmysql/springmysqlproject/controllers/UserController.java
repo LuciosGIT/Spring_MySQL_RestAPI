@@ -43,14 +43,14 @@ public class UserController {
 		userService.create(obj);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(obj.getId())
+                .buildAndExpand(obj.getKey())
                 .toUri();
 		return ResponseEntity.created(location).build();
 	}
 	
 	@PutMapping(value = "/{id}",consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
 	public ResponseEntity<Void> update(@RequestBody UserDTO obj, @PathVariable Long id){
-		obj.setId(id);
+		obj.setKey(id);
 		userService.update(obj);
 		return ResponseEntity.noContent().build();
 	}

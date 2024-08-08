@@ -4,9 +4,12 @@ import java.util.List;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import com.project.springmysql.springmysqlproject.controllers.UserController;
 import com.project.springmysql.springmysqlproject.convertertodto.UserConverter;
 import com.project.springmysql.springmysqlproject.dto.UserDTO;
 import com.project.springmysql.springmysqlproject.exceptions.ObjectNotFoundException;
@@ -20,6 +23,7 @@ public class UserService {
 	
 	public UserDTO findById(Long id) {
 		UserDTO user = UserConverter.convertUserToUserDto(userRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Object not found!")));
+		user.add(linkTo(methodOn(UserController.class).findById(id)).withSelfRel());
 		return user;
 	}
 	
@@ -39,7 +43,7 @@ public class UserService {
 	}
 	
 	public void update(UserDTO obj) {
-		UserDTO newObj =findById(obj.getId());
+		UserDTO newObj = findById(obj.getKey());
 		newObj.setName(obj.getName());
 		newObj.setEmail(obj.getEmail());
 		newObj.setPhoneNumber(obj.getPhoneNumber());
