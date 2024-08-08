@@ -29,6 +29,7 @@ public class UserService {
 	
 	public List<UserDTO> findAll(){
 		List<UserDTO> usersList = UserConverter.convertListofUserToListOfUserDto(userRepository.findAll());
+		usersList.stream().forEach(p -> p.add(linkTo(methodOn(UserController.class).findById(p.getKey())).withSelfRel()));
 		return usersList;
 	}
 	

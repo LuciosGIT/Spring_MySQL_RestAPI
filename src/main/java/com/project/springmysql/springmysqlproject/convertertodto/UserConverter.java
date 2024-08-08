@@ -17,6 +17,11 @@ public class UserConverter {
 		return userDto;
 	}
 	
+	static {
+		mapper.createTypeMap(
+				User.class, UserDTO.class)
+		.addMapping(User::getId, UserDTO::setKey);	
+		}
 	public static List<UserDTO> convertListofUserToListOfUserDto(List<User> users){
 		List<UserDTO> usersDto = new ArrayList<>();
 		for(User user : users) {
@@ -26,7 +31,7 @@ public class UserConverter {
 	}
 	
 	public static User convertUserDtoToUser(UserDTO obj) {
-		User userDto = mapper.map(obj, User.class);
-		return userDto;
+		User user = mapper.map(obj, User.class);
+		return user;
 	}
 }
