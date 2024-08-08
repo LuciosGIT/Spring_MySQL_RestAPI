@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,19 +26,19 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	@GetMapping
+	@GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public ResponseEntity<List<UserDTO>> findAll(){
 		List<UserDTO> usersList = userService.findAll();
 		return ResponseEntity.ok().body(usersList);
 	}
 	
-	@GetMapping(value = "/{id}")
+	@GetMapping(value = "/{id}",produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
 		UserDTO user = userService.findById(id);
 		return ResponseEntity.ok().body(user);
 	}
 	
-	@PostMapping
+	@PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public ResponseEntity<Void> create(@RequestBody UserDTO obj){
 		userService.create(obj);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -47,7 +48,7 @@ public class UserController {
 		return ResponseEntity.created(location).build();
 	}
 	
-	@PutMapping(value = "/{id}")
+	@PutMapping(value = "/{id}",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public ResponseEntity<Void> update(@RequestBody UserDTO obj, @PathVariable Long id){
 		obj.setId(id);
 		userService.update(obj);
