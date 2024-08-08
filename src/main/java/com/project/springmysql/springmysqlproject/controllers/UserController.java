@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.project.springmysql.springmysqlproject.domain.User;
+import com.project.springmysql.springmysqlproject.dto.UserDTO;
 import com.project.springmysql.springmysqlproject.services.UserService;
 
 @RestController
@@ -26,19 +26,19 @@ public class UserController {
 	private UserService userService;
 	
 	@GetMapping
-	public ResponseEntity<List<User>> findAll(){
-		List<User> usersList = userService.findAll();
+	public ResponseEntity<List<UserDTO>> findAll(){
+		List<UserDTO> usersList = userService.findAll();
 		return ResponseEntity.ok().body(usersList);
 	}
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<User> findById(@PathVariable Long id) {
-		User user = userService.findById(id);
+	public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
+		UserDTO user = userService.findById(id);
 		return ResponseEntity.ok().body(user);
 	}
 	
 	@PostMapping
-	public ResponseEntity<Void> create(@RequestBody User obj){
+	public ResponseEntity<Void> create(@RequestBody UserDTO obj){
 		userService.create(obj);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -48,7 +48,7 @@ public class UserController {
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Void> update(@RequestBody User obj, @PathVariable Long id){
+	public ResponseEntity<Void> update(@RequestBody UserDTO obj, @PathVariable Long id){
 		obj.setId(id);
 		userService.update(obj);
 		return ResponseEntity.noContent().build();

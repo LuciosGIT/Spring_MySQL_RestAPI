@@ -7,7 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import com.project.springmysql.springmysqlproject.domain.User;
+import com.project.springmysql.springmysqlproject.convertertodto.UserConverter;
+import com.project.springmysql.springmysqlproject.dto.UserDTO;
 import com.project.springmysql.springmysqlproject.exceptions.ObjectNotFoundException;
 import com.project.springmysql.springmysqlproject.repositories.UserRepository;
 
@@ -17,31 +18,32 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 	
-	public User findById(Long id) {
-		return userRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Object not found!"));
+	public UserDTO findById(Long id) {
+		UserDTO user = UserConverter.convertUserToUserDto(userRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Object not found!")));
+		return user;
 	}
 	
-	public List<User> findAll(){
-		List<User> users = userRepository.findAll();
-		return users;
+	public List<UserDTO> findAll(){
+		List<UserDTO> usersList = UserConverter.convertListofUserToListOfUserDto(userRepository.findAll());
+		return usersList;
 	}
 	
-	public void create(User obj) {
+	public void create(UserDTO obj) {
 		if(userRepository.existsByEmail(obj.getEmail())) {
 			throw new DataIntegrityViolationException("This email already exists!");
 		}
 		if(userRepository.existsByPhoneNumber(obj.getPhoneNumber())) {
 			throw new DataIntegrityViolationException("This phone number is already registered!");
 		}
-		userRepository.save(obj);
+		userRepository.save(UserConverter.convertUserDtoToUser(obj));
 	}
 	
-	public void update(User obj) {
-		User newObj = findById(obj.getId());
+	public void update(UserDTO obj) {
+		UserDTO newObj =findById(obj.getId());
 		newObj.setName(obj.getName());
 		newObj.setEmail(obj.getEmail());
 		newObj.setPhoneNumber(obj.getPhoneNumber());
-		userRepository.save(newObj);
+		userRepository.save(UserConverter.convertUserDtoToUser(newObj));
 	}
 	
 	public void delete(Long id) {
