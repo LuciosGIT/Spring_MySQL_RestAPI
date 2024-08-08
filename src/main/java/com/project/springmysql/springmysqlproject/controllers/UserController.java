@@ -4,7 +4,6 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.project.springmysql.springmysqlproject.dto.UserDTO;
 import com.project.springmysql.springmysqlproject.services.UserService;
+import com.project.springmysql.springmysqlproject.util.MediaType;
 
 @RestController
 @RequestMapping(value = "/users")
@@ -26,19 +26,19 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	@GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	@GetMapping(produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
 	public ResponseEntity<List<UserDTO>> findAll(){
 		List<UserDTO> usersList = userService.findAll();
 		return ResponseEntity.ok().body(usersList);
 	}
 	
-	@GetMapping(value = "/{id}",produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	@GetMapping(value = "/{id}",produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
 	public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
 		UserDTO user = userService.findById(id);
 		return ResponseEntity.ok().body(user);
 	}
 	
-	@PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	@PostMapping(consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
 	public ResponseEntity<Void> create(@RequestBody UserDTO obj){
 		userService.create(obj);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -48,7 +48,7 @@ public class UserController {
 		return ResponseEntity.created(location).build();
 	}
 	
-	@PutMapping(value = "/{id}",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	@PutMapping(value = "/{id}",consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
 	public ResponseEntity<Void> update(@RequestBody UserDTO obj, @PathVariable Long id){
 		obj.setId(id);
 		userService.update(obj);
