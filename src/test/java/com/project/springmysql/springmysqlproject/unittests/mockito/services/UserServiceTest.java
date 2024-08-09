@@ -147,7 +147,7 @@ class UserServiceTest {
 	}
 	
 	@Test
-	@DisplayName("when tries to create null user returns RequiredObjectNotFound exception")
+	@DisplayName("when tries to create null user returns RequiredObjectIsNull exception")
 	void whenTriesToCreateNullUserReturnsRequiredObjectNotFoundException() {
 		
 		
@@ -156,7 +156,7 @@ class UserServiceTest {
 	}
 	
 	@Test
-	@DisplayName("when tries to update null user returns RequiredObjectNotFound exception")
+	@DisplayName("when tries to update null user returns exception")
 	void whenTriesToUpdateNullUserReturnsRequiredObjectNotFoundException() {
 		
 		
