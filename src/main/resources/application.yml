@@ -10,4 +10,7 @@ spring:
     hibernate:
       ddl-auto: validate
     show-sql: false
- 
+springdoc:
+   pathsToMatch: /users/**
+   swagger-ui:
+     use-root-path: true
