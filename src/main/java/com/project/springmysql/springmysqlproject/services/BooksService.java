@@ -35,7 +35,6 @@ public class BooksService {
 	
 	public void update(BookDTO book) {
 		BookDTO newBook = findById(book.getId());
-		newBook.setId(book.getId());
 		newBook.setTitle(book.getTitle());
 		newBook.setAuthor(book.getAuthor());
 		booksRepository.save(BookConverter.convertBookDTOtoBook(newBook));

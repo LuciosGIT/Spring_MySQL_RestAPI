@@ -12,7 +12,6 @@ public class BookConverter {
 	
 	static ModelMapper mapper = new ModelMapper();
 	
-	
 	public static BookDTO convertBookToBookDTO(Books book) {
 		BookDTO bookDto = mapper.map(book, BookDTO.class);
 		return bookDto;

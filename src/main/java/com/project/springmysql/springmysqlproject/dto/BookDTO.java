@@ -1,11 +1,18 @@
 package com.project.springmysql.springmysqlproject.dto;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class BookDTO {
-	private Long id;
-	private String title;
-	private String author;
+
+
+
+public class BookDTO implements Serializable{
+	private static final long serialVersionUID = 1L;
+	
+	
+	Long id;
+	String title;
+	String author;
 	
 	public BookDTO() {
 		
@@ -59,4 +66,6 @@ public class BookDTO {
 		return Objects.equals(id, other.id);
 	}
 	
+	
 }
+
