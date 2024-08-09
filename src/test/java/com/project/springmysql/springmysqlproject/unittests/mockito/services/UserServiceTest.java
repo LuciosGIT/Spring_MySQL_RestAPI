@@ -4,7 +4,12 @@ package com.project.springmysql.springmysqlproject.unittests.mockito.services;
 
 
 import static org.mockito.ArgumentMatchers.any;
+
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
@@ -103,6 +108,35 @@ class UserServiceTest {
 		hasMessage("This email already exists!");
 		
 	}
+	
+	@Test
+	@DisplayName("delete return success")
+	void whenDeleteThenReturnSuccess() {
+		
+		when(userRepository.findById(anyLong())).thenReturn(optionalUser);
+		doNothing().when(userRepository).deleteById(anyLong());
+		userService.delete(userDto.getKey());
+		
+		verify(userRepository, times(1)).deleteById(anyLong());
+		
+		
+	}
+	
+	@Test
+	@DisplayName("when delete return object not found exception")
+	void whenDeleteReturnObjectNotFoundException() {
+		
+		when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
+		
+		
+		
+		Assertions.assertThatThrownBy(() -> userService.delete(userDto.getKey())).isInstanceOf(ObjectNotFoundException.class);
+		Assertions.assertThatThrownBy(() -> userService.delete(userDto.getKey())).isInstanceOf(ObjectNotFoundException.class).hasMessage("Object not found!");
+		
+	}
+	
+	
+	
 	
 	
 }
