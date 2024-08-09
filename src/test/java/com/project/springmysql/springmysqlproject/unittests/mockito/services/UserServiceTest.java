@@ -128,10 +128,19 @@ class UserServiceTest {
 		
 		when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
 		
-		
-		
 		Assertions.assertThatThrownBy(() -> userService.delete(userDto.getKey())).isInstanceOf(ObjectNotFoundException.class);
 		Assertions.assertThatThrownBy(() -> userService.delete(userDto.getKey())).isInstanceOf(ObjectNotFoundException.class).hasMessage("Object not found!");
+		
+	}
+	
+	@Test
+	@DisplayName("when update return object not found exception")
+	void whenUpdateReturnObjectNotFoundException() {
+		
+		when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
+		
+		Assertions.assertThatThrownBy(() -> userService.update(userDto)).isInstanceOf(ObjectNotFoundException.class);
+		Assertions.assertThatThrownBy(() -> userService.update(userDto)).isInstanceOf(ObjectNotFoundException.class).hasMessage("Object not found!");
 		
 	}
 	
