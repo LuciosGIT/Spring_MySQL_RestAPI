@@ -3,7 +3,7 @@ package com.project.springmysql.springmysqlproject.unittests.mockito.services;
 
 
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import static org.mockito.ArgumentMatchers.any;
 
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -147,10 +147,20 @@ class UserServiceTest {
 	}
 	
 	@Test
-	void testCreateWithNullPerson() {
+	@DisplayName("when tries to create null user returns RequiredObjectNotFound exception")
+	void whenTriesToCreateNullUserReturnsRequiredObjectNotFoundException() {
 		
 		
 		Assertions.assertThatThrownBy(() -> userService.create(null)).isInstanceOf(RequiredObjectIsNullException.class);
 		Assertions.assertThatThrownBy(() -> userService.create(null)).isInstanceOf(RequiredObjectIsNullException.class).hasMessage("You cannot save null objects!");
+	}
+	
+	@Test
+	@DisplayName("when tries to update null user returns RequiredObjectNotFound exception")
+	void whenTriesToUpdateNullUserReturnsRequiredObjectNotFoundException() {
+		
+		
+		Assertions.assertThatThrownBy(() -> userService.update(null)).isInstanceOf(RequiredObjectIsNullException.class);
+		Assertions.assertThatThrownBy(() -> userService.update(null)).isInstanceOf(RequiredObjectIsNullException.class).hasMessage("You cannot save null objects!");
 	}
 }
