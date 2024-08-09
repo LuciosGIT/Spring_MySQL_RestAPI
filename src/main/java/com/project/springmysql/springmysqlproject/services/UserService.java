@@ -14,6 +14,7 @@ import com.project.springmysql.springmysqlproject.convertertodto.UserConverter;
 import com.project.springmysql.springmysqlproject.domain.User;
 import com.project.springmysql.springmysqlproject.dto.UserDTO;
 import com.project.springmysql.springmysqlproject.exceptions.ObjectNotFoundException;
+import com.project.springmysql.springmysqlproject.exceptions.RequiredObjectIsNullException;
 import com.project.springmysql.springmysqlproject.repositories.UserRepository;
 
 @Service
@@ -35,6 +36,9 @@ public class UserService {
 	}
 	
 	public User create(UserDTO obj) {
+		if(obj == null) {
+			throw new RequiredObjectIsNullException("You cannot save null objects!");
+		}
 		if(userRepository.existsByEmail(obj.getEmail())) {
 			throw new DataIntegrityViolationException("This email already exists!");
 		}
@@ -45,6 +49,9 @@ public class UserService {
 	}
 	
 	public void update(UserDTO obj) {
+		if(obj == null) {
+			throw new RequiredObjectIsNullException("You cannot save null objects!");
+		}
 		UserDTO newObj = findById(obj.getKey());
 		newObj.setName(obj.getName());
 		newObj.setEmail(obj.getEmail());

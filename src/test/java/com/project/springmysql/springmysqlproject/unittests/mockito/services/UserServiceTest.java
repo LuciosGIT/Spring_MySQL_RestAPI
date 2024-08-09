@@ -3,6 +3,7 @@ package com.project.springmysql.springmysqlproject.unittests.mockito.services;
 
 
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -31,6 +32,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import com.project.springmysql.springmysqlproject.domain.User;
 import com.project.springmysql.springmysqlproject.dto.UserDTO;
 import com.project.springmysql.springmysqlproject.exceptions.ObjectNotFoundException;
+import com.project.springmysql.springmysqlproject.exceptions.RequiredObjectIsNullException;
 import com.project.springmysql.springmysqlproject.repositories.UserRepository;
 import com.project.springmysql.springmysqlproject.services.UserService;
 
@@ -144,8 +146,11 @@ class UserServiceTest {
 		
 	}
 	
-	
-	
-	
-	
+	@Test
+	void testCreateWithNullPerson() {
+		
+		
+		Assertions.assertThatThrownBy(() -> userService.create(null)).isInstanceOf(RequiredObjectIsNullException.class);
+		Assertions.assertThatThrownBy(() -> userService.create(null)).isInstanceOf(RequiredObjectIsNullException.class).hasMessage("You cannot save null objects!");
+	}
 }
