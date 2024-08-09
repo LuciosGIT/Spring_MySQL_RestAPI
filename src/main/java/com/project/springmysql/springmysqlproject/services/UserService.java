@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.project.springmysql.springmysqlproject.controllers.UserController;
 import com.project.springmysql.springmysqlproject.convertertodto.UserConverter;
+import com.project.springmysql.springmysqlproject.domain.User;
 import com.project.springmysql.springmysqlproject.dto.UserDTO;
 import com.project.springmysql.springmysqlproject.exceptions.ObjectNotFoundException;
 import com.project.springmysql.springmysqlproject.repositories.UserRepository;
@@ -33,14 +34,14 @@ public class UserService {
 		return usersList;
 	}
 	
-	public void create(UserDTO obj) {
+	public User create(UserDTO obj) {
 		if(userRepository.existsByEmail(obj.getEmail())) {
 			throw new DataIntegrityViolationException("This email already exists!");
 		}
 		if(userRepository.existsByPhoneNumber(obj.getPhoneNumber())) {
 			throw new DataIntegrityViolationException("This phone number is already registered!");
 		}
-		userRepository.save(UserConverter.convertUserDtoToUser(obj));
+		return userRepository.save(UserConverter.convertUserDtoToUser(obj));
 	}
 	
 	public void update(UserDTO obj) {
