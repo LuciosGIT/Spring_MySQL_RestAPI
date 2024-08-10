@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 
 import com.project.springmysql.springmysqlproject.domain.Books;
 import com.project.springmysql.springmysqlproject.dto.BookDTO;
 
+@Component
 public class BookConverter {
 	
 	static ModelMapper mapper = new ModelMapper();
