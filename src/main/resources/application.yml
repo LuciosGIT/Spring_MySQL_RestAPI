@@ -11,6 +11,6 @@ spring:
       ddl-auto: update
     show-sql: false
 springdoc:
-   pathsToMatch: /users/**
+   pathsToMatch: /**/**
    swagger-ui:
      use-root-path: true
