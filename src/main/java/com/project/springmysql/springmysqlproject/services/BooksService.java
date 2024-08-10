@@ -1,10 +1,14 @@
 package com.project.springmysql.springmysqlproject.services;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.project.springmysql.springmysqlproject.controllers.BooksController;
 import com.project.springmysql.springmysqlproject.convertertodto.BookConverter;
 import com.project.springmysql.springmysqlproject.dto.BookDTO;
 import com.project.springmysql.springmysqlproject.exceptions.ObjectNotFoundException;
@@ -19,6 +23,7 @@ public class BooksService {
 	
 	public List<BookDTO> findAll(){
 		List<BookDTO> listOfBooks = BookConverter.convertListOfBooksToListOfBooksDTO(booksRepository.findAll());
+		listOfBooks.stream().forEach(p -> p.add(linkTo(methodOn(BooksController.class).findById(p.getId())).withSelfRel()));
 		return listOfBooks;
 	}
 	
@@ -26,6 +31,7 @@ public class BooksService {
 		BookDTO bookDto = BookConverter.convertBookToBookDTO(booksRepository
 				.findById(id)
 				.orElseThrow(() -> new ObjectNotFoundException("Object Not Found!")));
+		bookDto.add(linkTo(methodOn(BooksController.class).findById(id)).withSelfRel());
 		return bookDto;
 	}
 	

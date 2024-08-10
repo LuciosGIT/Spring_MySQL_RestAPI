@@ -3,10 +3,12 @@ package com.project.springmysql.springmysqlproject.dto;
 import java.io.Serializable;
 import java.util.Objects;
 
+import org.springframework.hateoas.RepresentationModel;
 
 
 
-public class BookDTO implements Serializable{
+
+public class BookDTO extends RepresentationModel<BookDTO> implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	
