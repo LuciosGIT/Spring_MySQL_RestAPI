@@ -35,8 +35,11 @@ public class BooksService {
 		return bookDto;
 	}
 	
-	public void create(BookDTO book) {
-		booksRepository.save(BookConverter.convertBookDTOtoBook(book));
+	public BookDTO create(BookDTO book) {
+		BookDTO bookDto = BookConverter
+				.convertBookToBookDTO(booksRepository
+						.save(BookConverter.convertBookDTOtoBook(book)));
+		return bookDto;
 	}
 	
 	public void update(BookDTO book) {
