@@ -117,7 +117,7 @@ public class BooksServiceTest {
 	}
 	
 	@Test
-	@DisplayName("")
+	@DisplayName("when updates return object not found exception")
 	void whenUpdatesReturnObjectNotFoundException() {
 		
 		when(repository.findById(anyLong())).thenReturn(Optional.empty());
