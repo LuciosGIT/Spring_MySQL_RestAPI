@@ -16,4 +16,8 @@ public class TestConfigs {
 	public static final String CONTENT_TYPE_XML = "application/xml";
 
 	public static final String CONTENT_TYPE_YML = "application/x-yaml";
+
+	public static final String ORIGIN_LUCIO = "https://lucio.com.br";
+
+	public static final String ORIGIN_SEMERU = "https://semeru.com.br";
 }
