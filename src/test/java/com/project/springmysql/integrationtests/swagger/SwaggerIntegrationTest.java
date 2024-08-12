@@ -8,9 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.project.springmysql.configs.TestConfigs;
 import com.project.springmysql.integrationtests.testcontainers.AbstractIntegrationTest;
-import com.project.springmysql.springmysqlproject.SpringmysqlprojectApplication;
 
-@SpringBootTest(classes = SpringmysqlprojectApplication.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class SwaggerIntegrationTest extends AbstractIntegrationTest {
 	
 	@Test

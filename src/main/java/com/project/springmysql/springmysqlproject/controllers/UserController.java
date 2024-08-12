@@ -5,14 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.project.springmysql.springmysqlproject.dto.UserDTO;
@@ -33,7 +26,8 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
-	
+
+	@CrossOrigin(origins = "http://localhost:8080")
 	@GetMapping(produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
 	@Operation(summary = "Finds all users", description = "finds all users",
 	tags = {"User"},
@@ -72,7 +66,8 @@ public class UserController {
 		UserDTO user = userService.findById(id);
 		return ResponseEntity.ok().body(user);
 	}
-	
+
+	@CrossOrigin(origins = {"http://localhost:8080", "https://lucio.com.br"})
 	@PostMapping(consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
 	@Operation(summary = "Adds a new user", description = "adds a new user by passing in a JSON, XML or YML representation of the user!",
 	tags = {"User"},
