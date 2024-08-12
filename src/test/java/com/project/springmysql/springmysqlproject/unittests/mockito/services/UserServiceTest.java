@@ -88,11 +88,11 @@ class UserServiceTest {
 	@DisplayName("create return success")
 	void whenCreateThenReturnSuccess() {
 		when(userRepository.save(any())).thenReturn(user);
-		User response = userService.create(userDto);
+		UserDTO response = userService.create(userDto);
 		
 		Assertions.assertThat(response).isNotNull();
-		Assertions.assertThat(response.getClass()).isEqualTo(User.class);
-		Assertions.assertThat(response.getId()).isEqualTo(user.getId());
+		Assertions.assertThat(response.getClass()).isEqualTo(UserDTO.class);
+		Assertions.assertThat(response.getKey()).isEqualTo(user.getId());
 		
 		
 	}

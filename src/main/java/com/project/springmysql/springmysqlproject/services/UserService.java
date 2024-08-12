@@ -35,7 +35,7 @@ public class UserService {
 		return usersList;
 	}
 	
-	public User create(UserDTO obj) {
+	public UserDTO create(UserDTO obj) {
 		if(obj == null) {
 			throw new RequiredObjectIsNullException("You cannot save null objects!");
 		}
@@ -45,7 +45,7 @@ public class UserService {
 		if(userRepository.existsByPhoneNumber(obj.getPhoneNumber())) {
 			throw new DataIntegrityViolationException("This phone number is already registered!");
 		}
-		return userRepository.save(UserConverter.convertUserDtoToUser(obj));
+		return UserConverter.convertUserToUserDto(userRepository.save(UserConverter.convertUserDtoToUser(obj)));
 	}
 	
 	public void update(UserDTO obj) {

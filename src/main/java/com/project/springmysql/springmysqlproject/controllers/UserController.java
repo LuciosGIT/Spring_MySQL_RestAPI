@@ -80,13 +80,13 @@ public class UserController {
 			@ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),
 			
 	})
-	public ResponseEntity<Void> create(@RequestBody UserDTO obj){
-		userService.create(obj);
+	public ResponseEntity<UserDTO> create(@RequestBody UserDTO obj){
+		UserDTO user = userService.create(obj);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(obj.getKey())
                 .toUri();
-		return ResponseEntity.created(location).build();
+		return ResponseEntity.created(location).body(user);
 	}
 	
 	@PutMapping(value = "/{id}",consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
