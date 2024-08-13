@@ -1,48 +1,46 @@
-package com.project.springmysql.springmysqlproject.domain;
+package com.project.springmysql.springmysqlproject.dto;
 
 import java.io.Serializable;
 import java.util.Objects;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Column;
-import jakarta.persistence.Table; 
+import org.springframework.hateoas.RepresentationModel;
 
-@Entity
-@Table(name = "users")
-public class User implements Serializable {
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+
+ 
+
+@JsonPropertyOrder({"id", "name", "email", "phoneNumber"})
+public class PersonDTO extends RepresentationModel<PersonDTO> implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@JsonProperty("id")
+	private Long key;
 	private String name;
-	
-	@Column(unique = true)
 	private String email;
-	@Column(unique = true)
 	private String phoneNumber;
 	
-	public User() {
+	public PersonDTO() {
 		
 	}
 
-	public User(Long id, String name, String email, String phoneNumber) {
+	public PersonDTO(Long key, String name, String email, String phoneNumber) {
 		super();
-		this.id = id;
+		this.key = key;
 		this.name = name;
 		this.email = email;
 		this.phoneNumber = phoneNumber;
 	}
 
-	public Long getId() {
-		return id;
+
+
+	public Long getKey() {
+		return key;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setKey(Long key) {
+		this.key = key;
 	}
 
 	public String getName() {
@@ -71,7 +69,7 @@ public class User implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id);
+		return Objects.hash(key);
 	}
 
 	@Override
@@ -82,8 +80,8 @@ public class User implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		User other = (User) obj;
-		return Objects.equals(id, other.id);
+		PersonDTO other = (PersonDTO) obj;
+		return Objects.equals(key, other.key);
 	}
 	
 	

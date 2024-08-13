@@ -44,7 +44,7 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 
 		specification = new RequestSpecBuilder()
 				.addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_LUCIO)
-				.setBasePath("/users")
+				.setBasePath("/persons")
 				.setPort(TestConfigs.SERVER_PORT)
 				.addFilter(new RequestLoggingFilter(LogDetail.ALL))
 				.addFilter(new ResponseLoggingFilter(LogDetail.ALL))
@@ -91,7 +91,7 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 
 		specification = new RequestSpecBuilder()
 				.addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_SEMERU)
-				.setBasePath("/users")
+				.setBasePath("/persons")
 				.setPort(TestConfigs.SERVER_PORT)
 				.addFilter(new RequestLoggingFilter(LogDetail.ALL))
 				.addFilter(new ResponseLoggingFilter(LogDetail.ALL))
@@ -119,7 +119,7 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 
 		specification = new RequestSpecBuilder()
 				.addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_LUCIO)
-				.setBasePath("/users")
+				.setBasePath("/persons")
 				.setPort(TestConfigs.SERVER_PORT)
 				.addFilter(new RequestLoggingFilter(LogDetail.ALL))
 				.addFilter(new ResponseLoggingFilter(LogDetail.ALL))
@@ -160,7 +160,7 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 
 		specification = new RequestSpecBuilder()
 				.addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_SEMERU)
-				.setBasePath("/users")
+				.setBasePath("/persons")
 				.setPort(TestConfigs.SERVER_PORT)
 				.addFilter(new RequestLoggingFilter(LogDetail.ALL))
 				.addFilter(new ResponseLoggingFilter(LogDetail.ALL))

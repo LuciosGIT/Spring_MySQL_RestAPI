@@ -15,6 +15,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
+import com.project.springmysql.springmysqlproject.dto.PersonDTO;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -29,36 +30,35 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
 
-import com.project.springmysql.springmysqlproject.domain.User;
-import com.project.springmysql.springmysqlproject.dto.UserDTO;
+import com.project.springmysql.springmysqlproject.domain.Person;
 import com.project.springmysql.springmysqlproject.exceptions.ObjectNotFoundException;
 import com.project.springmysql.springmysqlproject.exceptions.RequiredObjectIsNullException;
-import com.project.springmysql.springmysqlproject.repositories.UserRepository;
-import com.project.springmysql.springmysqlproject.services.UserService;
+import com.project.springmysql.springmysqlproject.repositories.PersonRepository;
+import com.project.springmysql.springmysqlproject.services.PersonsService;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @ExtendWith(MockitoExtension.class)
-class UserServiceTest {
+class PersonServiceTest {
 	
 	@InjectMocks
-	private UserService userService;
+	private PersonsService userService;
 	
 	@Mock
-	private UserRepository userRepository;
+	private PersonRepository userRepository;
 	
 	
-	private User user;
+	private Person user;
 	
-	private UserDTO userDto;
+	private PersonDTO personDto;
 	
-	private Optional<User> optionalUser;
+	private Optional<Person> optionalUser;
 	
 	@BeforeEach
 	void setUpMocks() {
 		MockitoAnnotations.openMocks(this);
-		user = new User(1L ,"Carlos", "carlos@mail.com", "284219412");
-		userDto = new UserDTO(1L, "Carlos", "carlos@mail.com", "284219412");
-		optionalUser = Optional.of(new User(1L ,"Carlos", "carlos@mail.com", "284219412"));
+		user = new Person(1L ,"Carlos", "carlos@mail.com", "284219412");
+		personDto = new PersonDTO(1L, "Carlos", "carlos@mail.com", "284219412");
+		optionalUser = Optional.of(new Person(1L ,"Carlos", "carlos@mail.com", "284219412"));
 		
 	}
 	
@@ -71,12 +71,12 @@ class UserServiceTest {
 		when(userRepository.findById(9999L)).thenReturn(Optional.empty());
 		
 		
-		UserDTO response = userService.findById(userDto.getKey());
+		PersonDTO response = userService.findById(personDto.getKey());
 		
 		Assertions.assertThat(response).isNotNull();
-		Assertions.assertThat(UserDTO.class).isEqualTo(response.getClass());
-		Assertions.assertThat(response.getKey()).isEqualTo(userDto.getKey());
-		Assertions.assertThat(response.getName()).isEqualTo(userDto.getName());
+		Assertions.assertThat(PersonDTO.class).isEqualTo(response.getClass());
+		Assertions.assertThat(response.getKey()).isEqualTo(personDto.getKey());
+		Assertions.assertThat(response.getName()).isEqualTo(personDto.getName());
 		Assertions.assertThatThrownBy(() -> userService.findById(9999L)).isInstanceOf(ObjectNotFoundException.class);
 		
 		
@@ -88,10 +88,10 @@ class UserServiceTest {
 	@DisplayName("create return success")
 	void whenCreateThenReturnSuccess() {
 		when(userRepository.save(any())).thenReturn(user);
-		UserDTO response = userService.create(userDto);
+		PersonDTO response = userService.create(personDto);
 		
 		Assertions.assertThat(response).isNotNull();
-		Assertions.assertThat(response.getClass()).isEqualTo(UserDTO.class);
+		Assertions.assertThat(response.getClass()).isEqualTo(PersonDTO.class);
 		Assertions.assertThat(response.getKey()).isEqualTo(user.getId());
 		
 		
@@ -103,9 +103,9 @@ class UserServiceTest {
 		
 		when(userRepository.existsByEmail(anyString())).thenReturn(true);
 		
-		Assertions.assertThatThrownBy(() -> userService.create(userDto))
+		Assertions.assertThatThrownBy(() -> userService.create(personDto))
 		.isInstanceOf(DataIntegrityViolationException.class);
-		Assertions.assertThatThrownBy(() -> userService.create(userDto)).
+		Assertions.assertThatThrownBy(() -> userService.create(personDto)).
 		isInstanceOf(DataIntegrityViolationException.class).
 		hasMessage("This email already exists!");
 		
@@ -117,7 +117,7 @@ class UserServiceTest {
 		
 		when(userRepository.findById(anyLong())).thenReturn(optionalUser);
 		doNothing().when(userRepository).deleteById(anyLong());
-		userService.delete(userDto.getKey());
+		userService.delete(personDto.getKey());
 		
 		verify(userRepository, times(1)).deleteById(anyLong());
 		
@@ -130,8 +130,8 @@ class UserServiceTest {
 		
 		when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
 		
-		Assertions.assertThatThrownBy(() -> userService.delete(userDto.getKey())).isInstanceOf(ObjectNotFoundException.class);
-		Assertions.assertThatThrownBy(() -> userService.delete(userDto.getKey())).isInstanceOf(ObjectNotFoundException.class).hasMessage("Object not found!");
+		Assertions.assertThatThrownBy(() -> userService.delete(personDto.getKey())).isInstanceOf(ObjectNotFoundException.class);
+		Assertions.assertThatThrownBy(() -> userService.delete(personDto.getKey())).isInstanceOf(ObjectNotFoundException.class).hasMessage("Object not found!");
 		
 	}
 	
@@ -141,8 +141,8 @@ class UserServiceTest {
 		
 		when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
 		
-		Assertions.assertThatThrownBy(() -> userService.update(userDto)).isInstanceOf(ObjectNotFoundException.class);
-		Assertions.assertThatThrownBy(() -> userService.update(userDto)).isInstanceOf(ObjectNotFoundException.class).hasMessage("Object not found!");
+		Assertions.assertThatThrownBy(() -> userService.update(personDto)).isInstanceOf(ObjectNotFoundException.class);
+		Assertions.assertThatThrownBy(() -> userService.update(personDto)).isInstanceOf(ObjectNotFoundException.class).hasMessage("Object not found!");
 		
 	}
 	

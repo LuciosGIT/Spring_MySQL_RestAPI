@@ -1,46 +1,48 @@
-package com.project.springmysql.springmysqlproject.dto;
+package com.project.springmysql.springmysqlproject.domain;
 
 import java.io.Serializable;
 import java.util.Objects;
 
-import org.springframework.hateoas.RepresentationModel;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Column;
+import jakarta.persistence.Table; 
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-
- 
-
-@JsonPropertyOrder({"id", "name", "email", "phoneNumber"})
-public class UserDTO extends RepresentationModel<UserDTO> implements Serializable {
+@Entity
+@Table(name = "users")
+public class Person implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	@JsonProperty("id")
-	private Long key;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	private String name;
+	
+	@Column(unique = true)
 	private String email;
+	@Column(unique = true)
 	private String phoneNumber;
 	
-	public UserDTO() {
+	public Person() {
 		
 	}
 
-	public UserDTO(Long key, String name, String email, String phoneNumber) {
+	public Person(Long id, String name, String email, String phoneNumber) {
 		super();
-		this.key = key;
+		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.phoneNumber = phoneNumber;
 	}
 
-
-
-	public Long getKey() {
-		return key;
+	public Long getId() {
+		return id;
 	}
 
-	public void setKey(Long key) {
-		this.key = key;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -69,7 +71,7 @@ public class UserDTO extends RepresentationModel<UserDTO> implements Serializabl
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(key);
+		return Objects.hash(id);
 	}
 
 	@Override
@@ -80,8 +82,8 @@ public class UserDTO extends RepresentationModel<UserDTO> implements Serializabl
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		UserDTO other = (UserDTO) obj;
-		return Objects.equals(key, other.key);
+		Person other = (Person) obj;
+		return Objects.equals(id, other.id);
 	}
 	
 	

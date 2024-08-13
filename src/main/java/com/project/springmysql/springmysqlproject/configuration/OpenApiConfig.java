@@ -15,7 +15,7 @@ public class OpenApiConfig {
 		return new OpenAPI()
 				.info(new Info()
 						.title("RESTful API with Java 21 and SpringBoot 3")
-						.version("v1").description("User RESTful API")
+						.version("v1").description("Person RESTful API")
 						.termsOfService("https://www.linkedin.com/in/jluciojunior/")
 						.license(new License().name("Apache 2.0")
 						.url("https://www.linkedin.com/in/jluciojunior/")));
