@@ -2,6 +2,7 @@ package com.project.springmysql.springmysqlproject.exceptionhandlercontroller;
 
 import java.time.Instant;
 
+import com.project.springmysql.springmysqlproject.exceptions.InvalidJwtAuthenticationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,5 +49,17 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.status(error.getStatus()).body(error);
 		
 		
+	}
+
+	@ExceptionHandler(InvalidJwtAuthenticationException.class)
+	public ResponseEntity<StandardError> handleInvalidJwtAuthentcationException(RequiredObjectIsNullException e , HttpServletRequest request){
+		StandardError error = new StandardError();
+		error.setTimeStamp(Instant.now());
+		error.setStatus(HttpStatus.FORBIDDEN);
+		error.setError(e.getMessage());
+		error.setPath(request.getRequestURI());
+		return ResponseEntity.status(error.getStatus()).body(error);
+
+
 	}
 }
