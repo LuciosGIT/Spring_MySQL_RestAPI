@@ -52,7 +52,7 @@ public class GlobalExceptionHandler {
 	}
 
 	@ExceptionHandler(InvalidJwtAuthenticationException.class)
-	public ResponseEntity<StandardError> handleInvalidJwtAuthentcationException(RequiredObjectIsNullException e , HttpServletRequest request){
+	public ResponseEntity<StandardError> handleInvalidJwtAuthenticationException(RequiredObjectIsNullException e , HttpServletRequest request){
 		StandardError error = new StandardError();
 		error.setTimeStamp(Instant.now());
 		error.setStatus(HttpStatus.FORBIDDEN);
