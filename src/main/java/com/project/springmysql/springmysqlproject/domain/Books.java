@@ -12,14 +12,14 @@ import jakarta.persistence.Id;
 @Entity
 public class Books implements Serializable{
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long id;
+	private Long id;
 	@Column(nullable = false)
-	String title;
+	private String title;
 	@Column(nullable = false)
-	String author;
+	private String author;
 	
 	public Books() {
 		
