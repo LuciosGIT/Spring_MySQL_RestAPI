@@ -18,11 +18,10 @@ public class TokenDTO implements Serializable {
 
     }
     public TokenDTO(String username,
-                    String refreshToken,
-                    Date expiration,
-                    Date created,
                     Boolean authenticated,
-                    String accessToken) {
+                    Date created,
+                    Date expiration,
+                    String accessToken,String refreshToken) {
         this.username = username;
         this.refreshToken = refreshToken;
         this.expiration = expiration;
