@@ -1,4 +1,4 @@
-package com.project.springmysql.springmysqlproject.securityJwt;
+package com.project.springmysql.springmysqlproject.security.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
