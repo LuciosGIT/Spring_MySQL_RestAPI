@@ -23,7 +23,7 @@ public class SpringmysqlprojectApplication {
 		DelegatingPasswordEncoder passwordEncoder = new DelegatingPasswordEncoder("pbkdf2", encoders);
 		passwordEncoder.setDefaultPasswordEncoderForMatches(pbkdf2Encoder);
 
-		String result1 = passwordEncoder.encode("admin123");
+		String result1 = passwordEncoder.encode("coffee123");
 		String result2 = passwordEncoder.encode("admin234");
 		System.out.println("My hash result1 " + result1);
 		System.out.println("My hash result2 " + result2);
