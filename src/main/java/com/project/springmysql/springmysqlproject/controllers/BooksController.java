@@ -28,7 +28,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 
 @RestController
-@RequestMapping("/books")
+@RequestMapping("/api/book/v1")
 public class BooksController {
 	
 	@Autowired
