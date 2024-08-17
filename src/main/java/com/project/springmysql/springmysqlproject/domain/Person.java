@@ -11,7 +11,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Table; 
 
 @Entity
-@Table(name = "users")
+@Table(name = "person")
 public class Person implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
