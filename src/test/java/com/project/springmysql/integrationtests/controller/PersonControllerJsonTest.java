@@ -2,17 +2,24 @@ package com.project.springmysql.integrationtests.controller;
 
 import com.project.springmysql.configs.TestConfigs;
 import com.project.springmysql.integrationtests.testcontainers.AbstractIntegrationTest;
-import com.project.springmysql.integrationtests.vo.UserDTO;
+
+import com.project.springmysql.integrationtests.vo.AccountCredentialsDTO;
+import com.project.springmysql.integrationtests.vo.PersonDTO;
+import com.project.springmysql.integrationtests.vo.TokenDTO;
 import com.project.springmysql.springmysqlproject.SpringmysqlprojectApplication;
+
+
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.specification.RequestSpecification;
-import org.junit.Before;
+
 import org.junit.jupiter.api.*;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.testcontainers.shaded.com.fasterxml.jackson.core.JsonProcessingException;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.DeserializationFeature;
+import org.testcontainers.shaded.com.fasterxml.jackson.databind.JsonMappingException;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -27,32 +34,53 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 	private static RequestSpecification specification;
 	private static ObjectMapper objectMapper;
 
-	private static UserDTO user;
+	private static PersonDTO person;
 
 	@BeforeAll
 	public static void setUp() {
 		objectMapper = new ObjectMapper();
 		objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
-		user = new UserDTO();
+		person = new PersonDTO();
+	}
+
+
+	@Test
+	@Order(0)
+	public void authorization() throws JsonMappingException, JsonProcessingException {
+		AccountCredentialsDTO user = new AccountCredentialsDTO("leandro", "coffee123");
+
+		var accessToken =
+				given().basePath("/auth/signin")
+						.port(TestConfigs.SERVER_PORT)
+						.contentType(TestConfigs.CONTENT_TYPE_JASON)
+						.body(user)
+						.when()
+						.post()
+						.then()
+						.statusCode(200)
+						.extract()
+						.body().as(TokenDTO.class).getAccessToken();
+
+		specification = new RequestSpecBuilder()
+				.addHeader(TestConfigs.HEADER_PARAM_AUTHORIZATION, "Bearer " + accessToken)
+				.setBasePath("/api/person/v1")
+				.setPort(TestConfigs.SERVER_PORT)
+				.addFilter(new RequestLoggingFilter(LogDetail.ALL))
+				.addFilter(new ResponseLoggingFilter(LogDetail.ALL))
+				.build();
 	}
 
 	@Test
 	@Order(1)
 	public void testCreate() throws IOException {
-		mockUser();
+		mockPerson();
 
-		specification = new RequestSpecBuilder()
-				.addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_LUCIO)
-				.setBasePath("/persons")
-				.setPort(TestConfigs.SERVER_PORT)
-				.addFilter(new RequestLoggingFilter(LogDetail.ALL))
-				.addFilter(new ResponseLoggingFilter(LogDetail.ALL))
-				.build();
 		var content =
 				given().spec(specification)
 						.contentType(TestConfigs.CONTENT_TYPE_JASON)
-						.body(user)
+						.header(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_LUCIO)
+						.body(person)
 						.when()
 						.post()
 						.then()
@@ -60,8 +88,8 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 						.extract()
 						.body().asString();
 
-		UserDTO createdUser = objectMapper.readValue(content, UserDTO.class);
-		user = createdUser;
+		PersonDTO createdUser = objectMapper.readValue(content, PersonDTO.class);
+		person = createdUser;
 		Assertions.assertNotNull(createdUser);
 
 		assertTrue(createdUser.getId() > 0);
@@ -78,28 +106,21 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 		Assertions.assertEquals("9289211982", createdUser.getPhoneNumber());
 	}
 
-	private void mockUser() {
-		user.setName("Richard");
-		user.setEmail("richard@mail.com");
-		user.setPhoneNumber("9289211982");
+	private void mockPerson() {
+		person.setName("Richard");
+		person.setEmail("richard@mail.com");
+		person.setPhoneNumber("9289211982");
 	}
 
 	@Test
 	@Order(2)
 	public void testCreateWithWrongOrigin() throws IOException {
-		mockUser();
+		mockPerson();
 
-		specification = new RequestSpecBuilder()
-				.addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_SEMERU)
-				.setBasePath("/persons")
-				.setPort(TestConfigs.SERVER_PORT)
-				.addFilter(new RequestLoggingFilter(LogDetail.ALL))
-				.addFilter(new ResponseLoggingFilter(LogDetail.ALL))
-				.build();
-		var content =
-				given().spec(specification)
-						.contentType(TestConfigs.CONTENT_TYPE_JASON)
-						.body(user)
+		var content = given().spec(specification)
+				.contentType(TestConfigs.CONTENT_TYPE_JASON)
+				.header(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_SEMERU)
+						.body(person)
 						.when()
 						.post()
 						.then()
@@ -115,19 +136,12 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 	@Test
 	@Order(3)
 	public void testFindById() throws IOException {
-		mockUser();
+		mockPerson();
 
-		specification = new RequestSpecBuilder()
-				.addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_LUCIO)
-				.setBasePath("/persons")
-				.setPort(TestConfigs.SERVER_PORT)
-				.addFilter(new RequestLoggingFilter(LogDetail.ALL))
-				.addFilter(new ResponseLoggingFilter(LogDetail.ALL))
-				.build();
-		var content =
-				given().spec(specification)
-						.contentType(TestConfigs.CONTENT_TYPE_JASON)
-						.pathParam("id", user.getId())
+		var content = given().spec(specification)
+				.contentType(TestConfigs.CONTENT_TYPE_JASON)
+				.header(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_LUCIO)
+						.pathParam("id", person.getId())
 						.when()
 						.get("{id}")
 						.then()
@@ -135,8 +149,8 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 						.extract()
 						.body().asString();
 
-		UserDTO persistedUser = objectMapper.readValue(content, UserDTO.class);
-		user = persistedUser;
+		PersonDTO persistedUser = objectMapper.readValue(content, PersonDTO.class);
+		person = persistedUser;
 		Assertions.assertNotNull(persistedUser);
 
 		assertTrue(persistedUser.getId() > 0);
@@ -156,19 +170,12 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 	@Test
 	@Order(4)
 	public void testFindByIdWithWrongOrigin() throws IOException {
-		mockUser();
+		mockPerson();
 
-		specification = new RequestSpecBuilder()
-				.addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_SEMERU)
-				.setBasePath("/persons")
-				.setPort(TestConfigs.SERVER_PORT)
-				.addFilter(new RequestLoggingFilter(LogDetail.ALL))
-				.addFilter(new ResponseLoggingFilter(LogDetail.ALL))
-				.build();
-		var content =
-				given().spec(specification)
-						.contentType(TestConfigs.CONTENT_TYPE_JASON)
-						.pathParam("id", user.getId())
+		var content = given().spec(specification)
+				.contentType(TestConfigs.CONTENT_TYPE_JASON)
+				.header(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_SEMERU)
+						.pathParam("id", person.getId())
 						.when()
 						.get("{id}")
 						.then()
