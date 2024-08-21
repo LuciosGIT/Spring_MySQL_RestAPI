@@ -9,7 +9,7 @@ import java.util.Objects;
 
 
 
-public class UserDTO  implements Serializable {
+public class PersonDTO  implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 
@@ -19,11 +19,11 @@ public class UserDTO  implements Serializable {
 	private String email;
 	private String phoneNumber;
 	
-	public UserDTO() {
+	public PersonDTO() {
 		
 	}
 
-	public UserDTO(Long id, String name, String email, String phoneNumber) {
+	public PersonDTO(Long id, String name, String email, String phoneNumber) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -78,7 +78,7 @@ public class UserDTO  implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		UserDTO other = (UserDTO) obj;
+		PersonDTO other = (PersonDTO) obj;
 		return Objects.equals(id, other.id);
 	}
 	
