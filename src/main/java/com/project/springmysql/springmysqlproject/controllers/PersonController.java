@@ -102,10 +102,10 @@ public class PersonController {
 			@ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),
 			
 	})
-	public ResponseEntity<Void> update(@RequestBody PersonDTO obj, @PathVariable Long id){
+	public ResponseEntity<PersonDTO> update(@RequestBody PersonDTO obj, @PathVariable Long id){
 		obj.setKey(id);
-		personsService.update(obj);
-		return ResponseEntity.noContent().build();
+		PersonDTO updatedPerson = personsService.update(obj);
+		return ResponseEntity.ok(updatedPerson);
 	}
 	
 	@DeleteMapping(value = "/{id}")
