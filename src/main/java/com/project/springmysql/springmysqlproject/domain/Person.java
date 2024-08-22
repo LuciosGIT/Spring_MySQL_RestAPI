@@ -22,8 +22,12 @@ public class Person implements Serializable {
 	
 	@Column(unique = true)
 	private String email;
+
 	@Column(unique = true)
 	private String phoneNumber;
+
+	@Column(nullable = false)
+	private Boolean enabled;
 	
 	public Person() {
 		
@@ -69,22 +73,24 @@ public class Person implements Serializable {
 		this.phoneNumber = phoneNumber;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(id);
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Person other = (Person) obj;
-		return Objects.equals(id, other.id);
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Person person = (Person) o;
+		return Objects.equals(id, person.id) && Objects.equals(name, person.name) && Objects.equals(email, person.email) && Objects.equals(phoneNumber, person.phoneNumber) && Objects.equals(enabled, person.enabled);
 	}
-	
-	
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, name, email, phoneNumber, enabled);
+	}
 }

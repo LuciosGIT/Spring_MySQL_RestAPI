@@ -3,6 +3,7 @@ package com.project.springmysql.springmysqlproject.dto;
 import java.io.Serializable;
 import java.util.Objects;
 
+import jakarta.persistence.Column;
 import org.springframework.hateoas.RepresentationModel;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,6 +21,7 @@ public class PersonDTO extends RepresentationModel<PersonDTO> implements Seriali
 	private String name;
 	private String email;
 	private String phoneNumber;
+	private Boolean enabled;
 	
 	public PersonDTO() {
 		
@@ -33,6 +35,14 @@ public class PersonDTO extends RepresentationModel<PersonDTO> implements Seriali
 		this.phoneNumber = phoneNumber;
 	}
 
+
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
 
 
 	public Long getKey() {
@@ -68,21 +78,16 @@ public class PersonDTO extends RepresentationModel<PersonDTO> implements Seriali
 	}
 
 	@Override
-	public int hashCode() {
-		return Objects.hash(key);
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
+		PersonDTO personDTO = (PersonDTO) o;
+		return Objects.equals(key, personDTO.key) && Objects.equals(name, personDTO.name) && Objects.equals(email, personDTO.email) && Objects.equals(phoneNumber, personDTO.phoneNumber) && Objects.equals(enabled, personDTO.enabled);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		PersonDTO other = (PersonDTO) obj;
-		return Objects.equals(key, other.key);
+	public int hashCode() {
+		return Objects.hash(super.hashCode(), key, name, email, phoneNumber, enabled);
 	}
-	
-	
 }

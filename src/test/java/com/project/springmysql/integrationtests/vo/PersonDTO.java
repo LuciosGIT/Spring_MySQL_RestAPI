@@ -1,9 +1,6 @@
 package com.project.springmysql.integrationtests.vo;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.xml.bind.annotation.XmlRootElement;
-import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -19,7 +16,8 @@ public class PersonDTO  implements Serializable {
 	private String name;
 	private String email;
 	private String phoneNumber;
-	
+	private Boolean enabled;
+
 	public PersonDTO() {
 		
 	}
@@ -66,22 +64,24 @@ public class PersonDTO  implements Serializable {
 		this.phoneNumber = phoneNumber;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(id);
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		PersonDTO other = (PersonDTO) obj;
-		return Objects.equals(id, other.id);
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		PersonDTO personDTO = (PersonDTO) o;
+		return Objects.equals(id, personDTO.id) && Objects.equals(name, personDTO.name) && Objects.equals(email, personDTO.email) && Objects.equals(phoneNumber, personDTO.phoneNumber) && Objects.equals(enabled, personDTO.enabled);
 	}
-	
-	
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, name, email, phoneNumber, enabled);
+	}
 }
