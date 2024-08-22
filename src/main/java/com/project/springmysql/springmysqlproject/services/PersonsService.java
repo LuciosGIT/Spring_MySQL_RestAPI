@@ -47,7 +47,7 @@ public class PersonsService {
 		return PersonConverter.convertUserToUserDto(userRepository.save(PersonConverter.convertUserDtoToUser(obj)));
 	}
 	
-	public void update(PersonDTO obj) {
+	public PersonDTO update(PersonDTO obj) {
 		if(obj == null) {
 			throw new RequiredObjectIsNullException("You cannot save null objects!");
 		}
@@ -55,7 +55,8 @@ public class PersonsService {
 		newObj.setName(obj.getName());
 		newObj.setEmail(obj.getEmail());
 		newObj.setPhoneNumber(obj.getPhoneNumber());
-		userRepository.save(PersonConverter.convertUserDtoToUser(newObj));
+		PersonDTO updatedPerson = PersonConverter.convertUserToUserDto(userRepository.save(PersonConverter.convertUserDtoToUser(newObj)));
+		return updatedPerson;
 	}
 	
 	public void delete(Long id) {
