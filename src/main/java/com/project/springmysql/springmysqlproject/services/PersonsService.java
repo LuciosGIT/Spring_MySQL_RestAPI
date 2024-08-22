@@ -4,6 +4,7 @@ import java.util.List;
 
 
 import com.project.springmysql.springmysqlproject.dto.PersonDTO;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -57,6 +58,19 @@ public class PersonsService {
 		newObj.setPhoneNumber(obj.getPhoneNumber());
 		PersonDTO updatedPerson = PersonConverter.convertUserToUserDto(userRepository.save(PersonConverter.convertUserDtoToUser(newObj)));
 		return updatedPerson;
+	}
+
+	@Transactional
+	public PersonDTO disablePerson(Long id) {
+		userRepository.disablePerson(id);
+
+		var entity = userRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Object Not Found!"));
+
+		var dto = PersonConverter.convertUserToUserDto(entity);
+
+		dto.add(linkTo(methodOn(PersonController.class).findById(id)).withSelfRel());
+
+		return dto;
 	}
 	
 	public void delete(Long id) {
