@@ -12,7 +12,7 @@ public interface PersonRepository extends JpaRepository<Person,Long>{
 	boolean existsByEmail(String email);
     boolean existsByPhoneNumber(String phoneNumber);
 
-    @Query("UPDATE Person p p.enabled = false WHERE p.id =:id")
+    @Query("UPDATE Person p SET p.enabled = false WHERE p.id =:id")
 
     @Modifying
     void disablePerson(@Param("id") Long id);
