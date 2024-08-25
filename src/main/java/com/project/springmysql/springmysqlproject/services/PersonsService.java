@@ -1,14 +1,13 @@
 package com.project.springmysql.springmysqlproject.services;
 
-import java.util.List;
-
-
 import com.project.springmysql.springmysqlproject.dto.PersonDTO;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.project.springmysql.springmysqlproject.controllers.PersonController;
@@ -29,10 +28,15 @@ public class PersonsService {
 		return user;
 	}
 	
-	public List<PersonDTO> findAll(){
-		List<PersonDTO> usersList = PersonConverter.convertListofUserToListOfUserDto(userRepository.findAll());
-		usersList.stream().forEach(p -> p.add(linkTo(methodOn(PersonController.class).findById(p.getKey())).withSelfRel()));
-		return usersList;
+	public Page<PersonDTO> findAll(Pageable pageable){
+
+		var personPage = userRepository.findAll(pageable);
+
+		var personDtosPage = personPage.map(p -> PersonConverter.convertUserToUserDto(p));
+
+		personDtosPage.map(p -> p.add(linkTo(methodOn(PersonController.class).findById(p.getKey())).withSelfRel()));
+
+		return personDtosPage;
 	}
 	
 	public PersonDTO create(PersonDTO obj) {
