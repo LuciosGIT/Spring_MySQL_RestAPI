@@ -96,16 +96,19 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 		Assertions.assertNotNull(createdUser.getName());
 		Assertions.assertNotNull(createdUser.getEmail());
 		Assertions.assertNotNull(createdUser.getPhoneNumber());
+		Assertions.assertNotNull(createdUser.getEnabled());
 
 		assertEquals("Nelson", createdUser.getName());
 		assertEquals("Nelson@mail.com", createdUser.getEmail());
 		assertEquals("924728823", createdUser.getPhoneNumber());
+		assertEquals(false, createdUser.getEnabled());
 	}
 
 	private void mockPerson() {
 		person.setName("Nelson");
 		person.setEmail("Nelson@mail.com");
 		person.setPhoneNumber("924728823");
+		person.setEnabled(false);
 	}
 
 }

@@ -100,16 +100,19 @@ public class PersonControllerCorsJsonTest extends AbstractIntegrationTest {
 		Assertions.assertNotNull(createdUser.getName());
 		Assertions.assertNotNull(createdUser.getEmail());
 		Assertions.assertNotNull(createdUser.getPhoneNumber());
+		Assertions.assertNotNull(createdUser.getEnabled());
 
 		Assertions.assertEquals("Richard", createdUser.getName());
 		Assertions.assertEquals("richard@mail.com", createdUser.getEmail());
 		Assertions.assertEquals("9289211982", createdUser.getPhoneNumber());
+		Assertions.assertEquals(false, createdUser.getEnabled());
 	}
 
 	private void mockPerson() {
 		person.setName("Richard");
 		person.setEmail("richard@mail.com");
 		person.setPhoneNumber("9289211982");
+		person.setEnabled(false);
 	}
 
 	@Test
