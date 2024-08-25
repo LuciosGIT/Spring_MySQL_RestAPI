@@ -2,10 +2,13 @@ package com.project.springmysql.springmysqlproject.services;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 
 import com.project.springmysql.springmysqlproject.controllers.BooksController;
@@ -19,12 +22,21 @@ public class BooksService {
 	
 	@Autowired
 	private BooksRepository booksRepository;
+
+	@Autowired
+	private PagedResourcesAssembler<BookDTO> assembler;
 	
 	
-	public List<BookDTO> findAll(){
-		List<BookDTO> listOfBooks = BookConverter.convertListOfBooksToListOfBooksDTO(booksRepository.findAll());
-		listOfBooks.stream().forEach(p -> p.add(linkTo(methodOn(BooksController.class).findById(p.getId())).withSelfRel()));
-		return listOfBooks;
+	public PagedModel<EntityModel<BookDTO>> findAll(Pageable pageable){
+		var booksPage = booksRepository.findAll(pageable);
+
+		var bookDtosPage = booksPage.map(b -> BookConverter.convertBookToBookDTO(b));
+
+		bookDtosPage.stream().forEach(p -> p.add(linkTo(methodOn(BooksController.class).findById(p.getId())).withSelfRel()));
+
+		Link link = linkTo(methodOn(BooksController.class).findAll(pageable.getPageNumber(), pageable.getPageSize(), "asc")).withSelfRel();
+
+		return assembler.toModel(bookDtosPage, link);
 	}
 	
 	public BookDTO findById(Long id) {
