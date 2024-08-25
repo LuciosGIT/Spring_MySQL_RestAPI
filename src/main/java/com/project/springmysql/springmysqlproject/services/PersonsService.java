@@ -45,6 +45,18 @@ public class PersonsService {
 		Link link = linkTo(methodOn(PersonController.class).findAll(pageable.getPageNumber(), pageable.getPageSize(),"asc")).withSelfRel();
 		return assembler.toModel(personDtosPage, link);
 	}
+
+	public PagedModel<EntityModel<PersonDTO>> findPersonsByName(String name, Pageable pageable){
+
+		var personPage = userRepository.findPersonsByName(name, pageable);
+
+		var personDtosPage = personPage.map(p -> PersonConverter.convertUserToUserDto(p));
+
+		personDtosPage.map(p -> p.add(linkTo(methodOn(PersonController.class).findById(p.getKey())).withSelfRel()));
+
+		Link link = linkTo(methodOn(PersonController.class).findAll(pageable.getPageNumber(), pageable.getPageSize(),"asc")).withSelfRel();
+		return assembler.toModel(personDtosPage, link);
+	}
 	
 	public PersonDTO create(PersonDTO obj) {
 		if(obj == null) {
