@@ -2,6 +2,8 @@ server:
   port: 8080
 cors:
   originPatterns: http://localhost:8080,https://lucio.com.br,http://localhost:3000
+file:
+  upload-dir: /home/runner/work/springprojectmysql/UploadDir
 security:
   jwt:
     token:
