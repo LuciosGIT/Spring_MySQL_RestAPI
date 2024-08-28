@@ -31,11 +31,11 @@ jobs:
         cache: maven
         
     - name: Build Application JAR
-      working-directory: ./Spring_MySQL_RestAPI
+      working-directory: ./ws-sts/Spring_MySQL_RestAPI
       run: mvn clean package
 
     - name: Docker Compose Build
-      working-directory: ./Spring_MySQL_RestAPI
+      working-directory: ./ws-sts
       run: docker compose build
 
     - name: Push to Docker Hub Container Registry
